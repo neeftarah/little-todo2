@@ -87,10 +87,15 @@ database server and update the `DATABASE_URL` environment variable in
 This app uses Webpack Encore for the CSS, JS and image files, which we use
 a bit near the beginning to test out our login flow.
 
-First, make sure you have `npm` installed (`npm` comes with Node) and then run:
+First, make sure you have `npm` installed (`npm` comes with Node) and then :
 
+Install node dependencies
 ```bash
 npm install
+```
+
+Run watcher in order to compile any changes automatically
+```bash
 npm run watch
 ```
 
