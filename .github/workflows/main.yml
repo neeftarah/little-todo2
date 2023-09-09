@@ -1,0 +1,91 @@
+name: CI
+
+on: [push, pull_request]
+
+#permissions:
+#  contents: read
+
+jobs:
+  build:
+    name: little-todo2 (Symfony + PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+
+    # Docs: https://docs.github.com/en/actions/using-containerized-services
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['8.2']
+
+    steps:
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: phpunit-bridge
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql
+          coverage: xdebug
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Copy .env.test.local
+        run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Run Migration
+        run: |
+          composer require --dev symfony/orm-pack
+          php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+          php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1:${{ job.services.postgres.ports[5432] }}/postgres?charset=UTF-8
+
+      - name: Install PHPUnit
+        run: simple-phpunit install
+
+      - name: Run tests
+        run: simple-phpunit --coverage-text
+#
+#      - name: PHP CS Fixer Check
+#        run: php vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php_cs.dist
+#
+#      - name: Symfony lint
+#        run: php bin/console lint:yaml config
+#
+#      - name: PHPStan
+#        run: php vendor/bin/phpstan analyze
+#
+#      - name: PHPMessDetector
+#        run: php vendor/bin/phpmd src/ text phpmd.xml
+#
+#      - name: Check security vulnerabilities
+#        run: php bin/console security:check
+#
+#      - name: Check coding standards with PHP CodeSniffer
+#        run: php vendor/bin/phpcs
+#
+#      - name: Check security vulnerabilities with SensioLabs Security Checker
+#        run: php bin/console security:check
