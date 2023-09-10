@@ -2,8 +2,8 @@ name: CI
 
 on: [push, pull_request]
 
-#permissions:
-#  contents: read
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -31,7 +31,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: phpunit-bridge
+          tools: phpunit-bridge, phpmd
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql
           coverage: xdebug
 
@@ -68,24 +68,30 @@ jobs:
 
       - name: Run tests
         run: simple-phpunit --coverage-text
-#
-#      - name: PHP CS Fixer Check
-#        run: php vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php_cs.dist
-#
-#      - name: Symfony lint
-#        run: php bin/console lint:yaml config
-#
-#      - name: PHPStan
-#        run: php vendor/bin/phpstan analyze
-#
-#      - name: PHPMessDetector
-#        run: php vendor/bin/phpmd src/ text phpmd.xml
-#
-#      - name: Check security vulnerabilities
-#        run: php bin/console security:check
-#
-#      - name: Check coding standards with PHP CodeSniffer
-#        run: php vendor/bin/phpcs
-#
-#      - name: Check security vulnerabilities with SensioLabs Security Checker
-#        run: php bin/console security:check
+
+      - name: Lint YAML files
+        run: php ./bin/console lint:yaml config --parse-tags
+
+      - name: Lint Twig templates
+        run: php ./bin/console lint:twig templates
+
+      - name: Lint Parameters and Services
+        run: php ./bin/console lint:container --no-debug
+
+      - name: Lint Doctrine entities
+        run: php ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
+
+      - name: Lint Composer config
+        run: composer validate --strict
+
+      - name: Codding standards
+        run: php vendor/bin/phpcs -v --standard=PSR2 --ignore=./src/Kernel.php ./src
+
+      - name: PHPStan
+        run: php vendor/bin/phpstan analyze
+
+      - name: Check security vulnerabilities
+        uses: symfonycorp/security-checker-action@v4
+
+      - name: Check if any dependencies are compromised
+        run: composer audit
