@@ -1,0 +1,27 @@
+grumphp:
+    ascii:
+        failed: ~
+        succeeded: ~
+    fixer:
+        enabled: true
+        fix_by_default: true
+    tasks:
+        composer:
+            strict: true
+        phplint: ~
+        git_blacklist: ~ # Test your changes for blacklisted keywords, such as die(, var_dump( etc.
+        phpcsfixer: ~
+        yamllint: ~
+        stylelint: ~
+        twigcs:
+            exclude: [vendor]
+        phpstan: ~
+        doctrine_schema_validate:
+            skip_sync: true
+        phpunit: ~
+        eslint: ~
+        git_commit_message: ~
+        securitychecker_symfony:
+            run_always: true
+    extensions:
+        - JonMldr\GrumPhpDoctrineTask\ExtensionLoader
