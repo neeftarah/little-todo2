@@ -10,7 +10,7 @@ grumphp:
             strict: true
         phplint: ~
         git_blacklist: ~ # Test your changes for blacklisted keywords, such as die(, var_dump( etc.
-        phpcsfixer: ~
+        phpcs: ~
         yamllint: ~
         stylelint: ~
         twigcs:
