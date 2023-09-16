@@ -20,7 +20,9 @@ grumphp:
             skip_sync: true
         phpunit: ~
         eslint: ~
-        git_commit_message: ~
+        git_commit_message:
+            max_body_width: 0
+            max_subject_width: 0
         securitychecker_symfony:
             run_always: true
     extensions:
