@@ -31,11 +31,17 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage cacheDirectory="./var/test/coverage"
+              processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>
+
+        <report>
+            <html outputDirectory="./var/test/html-coverage" lowUpperBound="50" highLowerBound="90"/>
+        </report>
     </coverage>
+
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />

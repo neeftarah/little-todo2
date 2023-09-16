@@ -29,7 +29,7 @@ class Task
     private ?\DateTimeImmutable $due_date = null;
 
     #[ORM\Column]
-    private ?bool $done = null;
+    private bool $done = false;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -43,7 +43,7 @@ class Task
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $categories = null;
+    private ?Category $category = null;
 
     /**
      * @var Collection<int, Tag>|ArrayCollection<int, Tag>
@@ -157,14 +157,14 @@ class Task
         return $this;
     }
 
-    public function getCategories(): ?Category
+    public function getCategory(): ?Category
     {
-        return $this->categories;
+        return $this->category;
     }
 
-    public function setCategories(?Category $categories): static
+    public function setCategory(?Category $category): static
     {
-        $this->categories = $categories;
+        $this->category = $category;
 
         return $this;
     }

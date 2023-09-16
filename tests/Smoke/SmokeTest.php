@@ -31,7 +31,7 @@ class SmokeTest extends WebTestCase
     /**
      * @dataProvider authenticatedUrlProvider
      */
-    public function testUrlAccessibilityWithAuthentedUser(string $uri, int $expectedStatusCode): void
+    public function testUrlAccessibilityWithAuthenticatedUser(string $uri, int $expectedStatusCode): void
     {
         $client = static::createClient();
 

@@ -18,7 +18,8 @@ grumphp:
         phpstan: ~
         doctrine_schema_validate:
             skip_sync: true
-        phpunit: ~
+        phpunit:
+            testsuite: "Unit test"
         eslint: ~
         git_commit_message:
             max_body_width: 0

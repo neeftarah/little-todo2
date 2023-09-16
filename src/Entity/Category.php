@@ -25,7 +25,7 @@ class Category
     /**
      * @var Collection<int, Task>|ArrayCollection<int, Task>
      */
-    #[ORM\OneToMany(mappedBy: 'categories', targetEntity: Task::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Task::class, orphanRemoval: true)]
     private Collection $tasks;
 
     public function __construct()
@@ -74,7 +74,7 @@ class Category
     {
         if (!$this->tasks->contains($task)) {
             $this->tasks->add($task);
-            $task->setCategories($this);
+            $task->setCategory($this);
         }
 
         return $this;
@@ -84,8 +84,8 @@ class Category
     {
         if ($this->tasks->removeElement($task)) {
             // set the owning side to null (unless already changed)
-            if ($task->getCategories() === $this) {
-                $task->setCategories(null);
+            if ($task->getCategory() === $this) {
+                $task->setCategory(null);
             }
         }
 
