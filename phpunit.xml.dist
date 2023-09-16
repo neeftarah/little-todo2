@@ -18,12 +18,16 @@
     </php>
 
     <testsuites>
-        <testsuite name="unit">
-            <directory>tests/unit</directory>
+        <testsuite name="Unit test">
+            <directory>tests/Unit</directory>
         </testsuite>
 
-        <testsuite name="integration">
-            <directory>tests/integration</directory>
+        <testsuite name="Smoke tests">
+            <directory>tests/Smoke</directory>
+        </testsuite>
+
+        <testsuite name="Integration tests">
+            <directory>tests/Integration</directory>
         </testsuite>
     </testsuites>
 
@@ -38,5 +42,6 @@
     </listeners>
 
     <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
 </phpunit>
