@@ -88,6 +88,9 @@
             "./tests/bootstrap.php"
         ]
     },
+    "pyrrah/gravatar-bundle": {
+        "version": "v1.3.0"
+    },
     "squizlabs/php_codesniffer": {
         "version": "3.7",
         "recipe": {
