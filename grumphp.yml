@@ -12,7 +12,6 @@ grumphp:
         git_blacklist: ~ # Test your changes for blacklisted keywords, such as die(, var_dump( etc.
         phpcs: ~
         yamllint: ~
-        stylelint: ~
         twigcs:
             exclude: [vendor]
         phpstan: ~
@@ -20,7 +19,6 @@ grumphp:
             skip_sync: true
         phpunit:
             testsuite: "Unit test"
-        eslint: ~
         git_commit_message:
             max_body_width: 0
             max_subject_width: 0
