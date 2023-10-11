@@ -99,10 +99,10 @@ Run watcher in order to compile any changes automatically
 npm run watch
 ```
 
-### Start the Symfony web server
+## Start the Project
 
-You can use Nginx or Apache, but Symfony's local web server
-works even better.
+You can use Nginx or Apache and a local database, but Symfony's local web server
+works even better, and docker is awesome.
 
 To install the Symfony local web server, follow
 "Downloading the Symfony client" instructions found
@@ -110,7 +110,14 @@ here: https://symfony.com/download - you only need to do this
 once on your system.
 
 Then, to start the web server, open a terminal, move into the
-project, and run:
+project, and:
+
+- If not already running, start docker environment:
+
+```bash
+docker-compose up -d
+```
+- Start Synfony integrated server:
 
 ```bash
 symfony serve -d
@@ -123,6 +130,29 @@ Now check out the site at `https://localhost:8000`
 
 Have fun!
 
+## Tests
+
+### Pre-commit tests
+
+GrumPHP is configured to run tests before each commit.  
+You can run them manually with the following command :  
+```bash
+ .\vendor\bin\grumphp run 
+```
+
+### Unit tests
+
+You can run the following command to run PHPUnit
+
+```bash
+php vendor/bin/phpunit --testdox --testsuite='Unit test'
+```
+
+Or you can run all tests (unit, integrations, smokes, etc.) with the following command to run PHPUnit (the full environment must be up : db, server, etc.) :
+
+```bash
+php vendor/bin/phpunit --testdox
+```
 
 
 License
