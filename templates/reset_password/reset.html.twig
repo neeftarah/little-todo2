@@ -1,12 +1,29 @@
-{% extends 'base.html.twig' %}
+{% extends 'public.html.twig' %}
 
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
+    <main class="form-reset-password w-100 m-auto">
+        <form name="change_password_form" method="post">
+            {{ form_row(resetForm._token) }}
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+            <h1>Reset your password</h1>
+
+            <div class="form-floating">
+                <input type="password" name="change_password_form[plainPassword][first]"
+                       id="change_password_form_plainPassword_first" class="form-control"
+                       autocomplete="new-password" required autofocus placeholder="Nouveau mot de passe">
+                <label for="change_password_form_plainPassword_first" class="required">Nouveau mot de passe</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="password" name="change_password_form[plainPassword][second]"
+                       id="change_password_form_plainPassword_second" class="form-control"
+                       autocomplete="new-password" required autofocus placeholder="Confirmation">
+                <label for="change_password_form_plainPassword_second" class="required">Confirmation</label>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 mt-4">Reset password</button>
+        </form>
+    </main>
 {% endblock %}
